@@ -6,7 +6,7 @@ import com.driver.io.repository.UserRepository;
 import com.driver.model.request.UserDetailsRequestModel;
 import com.driver.model.response.*;
 import com.driver.service.UserService;
-import com.driver.shared.dto.Order;
+import com.driver.shared.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
     @Override
-    public Order createUser(UserDetailsRequestModel user) throws  AlreadyExistsException {
+    public UserDto createUser(UserDetailsRequestModel user) throws  AlreadyExistsException {
         UserEntity userExist=userRepository.findByUserId(user.getUserId());
         if(userExist!=null)
             throw new AlreadyExistsException("user  already exists...!!");
@@ -32,19 +32,19 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public Order getUser(String email) throws Exception {
+    public UserDto getUser(String email) throws Exception {
         UserEntity userEntity=userRepository.findByEmail(email);
         return UserConverter.convertEntityToDto(userEntity);
     }
 
     @Override
-    public Order getUserByUserId(String userId) throws Exception {
+    public UserDto getUserByUserId(String userId) throws Exception {
         UserEntity userEntity=userRepository.findByUserId(userId);
         return UserConverter.convertEntityToDto(userEntity);
     }
 
     @Override
-    public Order updateUser(String userId, UserDetailsRequestModel userDetails) throws Exception {
+    public UserDto updateUser(String userId, UserDetailsRequestModel userDetails) throws Exception {
         long id= userRepository.findByUserId(userId).getId();
        UserEntity user= UserEntity.builder()
                 .id(id)
@@ -83,14 +83,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Order> getUsers() {
+    public List<UserDto> getUsers() {
 
-        List<Order> userList = new ArrayList<>();
+        List<UserDto> userList = new ArrayList<>();
         List<UserEntity> userlist;
         userlist = userRepository.findAll();
 
         for (UserEntity user : userlist) {
-            Order userDto = UserConverter.convertEntityToDto(user);
+            UserDto userDto = UserConverter.convertEntityToDto(user);
             userList.add(userDto);
         }
         return userList;

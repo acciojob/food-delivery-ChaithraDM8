@@ -3,7 +3,7 @@ package com.driver.shared.dto;
 import lombok.Builder;
 
 @Builder
-public class Order {
+public class UserDto {
 
 	private long id;
 	private String userId;

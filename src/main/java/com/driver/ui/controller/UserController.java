@@ -9,7 +9,7 @@ import com.driver.model.response.OperationStatusModel;
 import com.driver.model.response.UserResponse;
 import com.driver.service.impl.AlreadyExistsException;
 import com.driver.service.impl.UserServiceImpl;
-import com.driver.shared.dto.Order;
+import com.driver.shared.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,19 +28,19 @@ public class UserController {
 	UserServiceImpl userService;
 	@GetMapping(path = "/{id}")
 	public UserResponse getUser(@PathVariable String id) throws Exception{
-	  	Order userDto=userService.getUserByUserId(id);
+	  	UserDto userDto=userService.getUserByUserId(id);
 		return UserConverter.convertDtoToResponse(userDto);
 	}
 
 	@PostMapping()
 	public UserResponse createUser(@RequestBody UserDetailsRequestModel userDetails) throws AlreadyExistsException {
-		Order userDto= userService.createUser(userDetails);
+		UserDto userDto= userService.createUser(userDetails);
 	return UserConverter.convertDtoToResponse(userDto);
 	}
 
 	@PutMapping(path = "/{id}")
 	public UserResponse updateUser(@PathVariable String id, @RequestBody UserDetailsRequestModel userDetails) throws Exception{
-		Order userDto=userService.updateUser(id,userDetails);
+		UserDto userDto=userService.updateUser(id,userDetails);
 		return UserConverter.convertDtoToResponse(userDto);
 	}
 
@@ -52,8 +52,8 @@ public class UserController {
 	@GetMapping()
 	public List<UserResponse> getUsers(){
 		List<UserResponse> userList=new ArrayList<>();
-		List<Order> userDto=userService.getUsers();
-		for (Order user : userDto) {
+		List<UserDto> userDto=userService.getUsers();
+		for (UserDto user : userDto) {
 			UserResponse userResponse = UserConverter.convertDtoToResponse(user);
 			userList.add(userResponse);
 		}
