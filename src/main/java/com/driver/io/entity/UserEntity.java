@@ -1,5 +1,9 @@
 package com.driver.io.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -8,13 +12,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserEntity{
 
 	@Id
 	@GeneratedValue
 	private long id;
 
-	@Column(nullable = false)
+	@Column(unique = true,nullable = false)
 	private String userId;
 
 	@Column(nullable = false, length = 20)

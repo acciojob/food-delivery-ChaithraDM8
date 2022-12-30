@@ -1,7 +1,10 @@
 package com.driver.model.request;
 
-public class UserDetailsRequestModel {
+import javax.persistence.Column;
 
+public class UserDetailsRequestModel {
+	@Column(unique = true,nullable = false)
+	private String userId;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -27,6 +30,14 @@ public class UserDetailsRequestModel {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 }
