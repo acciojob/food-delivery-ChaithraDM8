@@ -29,10 +29,10 @@ public class FoodServiceImpl implements FoodService {
     RandomStringGenerator randomStringGenerator;
 
     @Override
-    public FoodDto createFood(FoodDto food) throws Exception {
+    public FoodDto createFood(FoodDto food)  {
         FoodEntity foodPresent = foodRepository.findByFoodId(food.getFoodId());
         if (foodPresent != null) {
-            throw new Exception("Food already exists...!!");
+            throw new RuntimeException("Food already exists...!!");
         }
         FoodEntity foodEntity = FoodConverter.convertDtoToEntity(food);
         foodEntity.setFoodId(randomStringGenerator.generateFoodId(30));

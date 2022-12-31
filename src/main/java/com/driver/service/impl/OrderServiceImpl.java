@@ -22,10 +22,10 @@ public class OrderServiceImpl implements OrderService {
     RandomStringGenerator stringGenerator;
 
     @Override
-    public OrderDto createOrder(OrderDto order) throws Exception {
+    public OrderDto createOrder(OrderDto order)  {
        OrderEntity orderPresent = orderRepository.findByOrderId(order.getOrderId());
         if (orderPresent != null) {
-            throw new Exception("Order already exists...!!");
+            throw new RuntimeException("Order already exists...!!");
         }
         OrderEntity orderEntity = OrderConverter.convertDtoToEntity(order);
         orderEntity.setOrderId(stringGenerator.generateOrderId(30));
