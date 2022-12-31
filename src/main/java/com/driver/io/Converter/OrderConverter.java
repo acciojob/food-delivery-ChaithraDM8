@@ -8,15 +8,7 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class OrderConverter {
-    public static OrderEntity ConvertRequestToEntity(OrderDetailsRequestModel order) {
-        return OrderEntity.builder()
-                .orderId(order.getOrderId())
-                .userId(order.getUserId())
-                .items(order.getItems())
-                .cost(order.getCost())
-                .status(false)
-               .build();
-    }
+
 
     public static OrderDto convertEntityToDto(OrderEntity orderEntity) {
         return OrderDto.builder()
@@ -35,6 +27,23 @@ public class OrderConverter {
                 .items(orderDto.getItems())
                 .userId(orderDto.getUserId())
                 .status(orderDto.isStatus())
+                .build();
+    }
+
+    public static OrderDto convertRequestToDto(OrderDetailsRequestModel order) {
+        return OrderDto.builder()
+                .items(order.getItems())
+                .cost(order.getCost())
+                .userId(order.getUserId())
+                .build();
+    }
+
+    public static OrderEntity convertDtoToEntity(OrderDto orderDto) {
+        return OrderEntity.builder()
+                .cost(orderDto.getCost())
+                .items(orderDto.getItems())
+                .userId(orderDto.getUserId())
+                .status(false)
                 .build();
     }
 }

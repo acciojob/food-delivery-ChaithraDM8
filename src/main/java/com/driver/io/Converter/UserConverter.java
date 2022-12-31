@@ -5,24 +5,21 @@ import com.driver.model.request.UserDetailsRequestModel;
 import com.driver.model.response.UserResponse;
 import com.driver.shared.dto.UserDto;
 import lombok.experimental.UtilityClass;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @UtilityClass
 public class UserConverter {
-    public static UserEntity ConvertRequestToEntity(UserDetailsRequestModel user) {
-        return UserEntity.builder()
-                .userId(user.getUserId())
-                .email(user.getEmail())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .build();
-    }
+
+    @Autowired
+    RandomStringGenerator stringGenerator;
 
     public static UserDto convertEntityToDto(UserEntity userEntity) {
+
        return UserDto.builder()
-                .userId(userEntity.getUserId())
                 .email(userEntity.getEmail())
                 .firstName(userEntity.getFirstName())
                 .lastName(userEntity.getLastName())
+                .userId(userEntity.getUserId())
                 .build();
     }
     public static UserResponse convertDtoToResponse(UserDto userDto) {
@@ -34,4 +31,19 @@ public class UserConverter {
                 .build();
     }
 
+    public static UserDto convertRequestToDto(UserDetailsRequestModel userDetails) {
+        return UserDto.builder()
+                .firstName(userDetails.getFirstName())
+                .lastName(userDetails.getLastName())
+                .email(userDetails.getEmail())
+                .build();
+    }
+
+    public static UserEntity convertDtoToEntity(UserDto user) {
+        return UserEntity.builder()
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .build();
+    }
 }

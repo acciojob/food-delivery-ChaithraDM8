@@ -2,14 +2,18 @@ package com.driver.shared.dto;
 
 import lombok.Builder;
 
+import javax.persistence.GeneratedValue;
+
 @Builder
 public class UserDto {
 
+	@GeneratedValue
 	private long id;
 	private String userId;
 	private String firstName;
 	private String lastName;
 	private String email;
+
 
 	public long getId() {
 		return id;

@@ -1,5 +1,6 @@
 package com.driver.service.impl;
 
+import com.driver.io.Converter.RandomStringGenerator;
 import com.driver.io.Converter.UserConverter;
 import com.driver.io.entity.UserEntity;
 import com.driver.io.repository.UserRepository;
@@ -7,6 +8,7 @@ import com.driver.model.request.UserDetailsRequestModel;
 import com.driver.model.response.*;
 import com.driver.service.UserService;
 import com.driver.shared.dto.UserDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,18 +16,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    RandomStringGenerator stringGenerator;
     @Override
-    public UserDto createUser(UserDetailsRequestModel user) throws  AlreadyExistsException {
+    public UserDto createUser(UserDto user) throws  Exception {
+        //log.info("from service");
         UserEntity userExist=userRepository.findByUserId(user.getUserId());
         if(userExist!=null)
-            throw new AlreadyExistsException("user  already exists...!!");
+            throw new Exception("user  already exists...!!");
 
-        UserEntity userEntity = UserConverter.ConvertRequestToEntity(user);
+        UserEntity userEntity = UserConverter.convertDtoToEntity(user);
+        userEntity.setUserId(stringGenerator.generateUserId(30));
         userEntity=userRepository.save(userEntity);
-
         return UserConverter.convertEntityToDto(userEntity);
 
     }
@@ -40,11 +46,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserByUserId(String userId) throws Exception {
         UserEntity userEntity=userRepository.findByUserId(userId);
-        return UserConverter.convertEntityToDto(userEntity);
+        if (userEntity == null)
+            throw new Exception("user not found...!!");
+       UserDto userDto= UserConverter.convertEntityToDto(userEntity);
+        userDto.setUserId(userEntity.getUserId());
+       return userDto;
     }
 
     @Override
-    public UserDto updateUser(String userId, UserDetailsRequestModel userDetails) throws Exception {
+    public UserDto updateUser(String userId, UserDto userDetails) throws Exception {
         long id= userRepository.findByUserId(userId).getId();
        UserEntity user= UserEntity.builder()
                 .id(id)
@@ -58,27 +68,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public OperationStatusModel deleteUser(String userId) throws Exception {
+    public void deleteUser(String userId) throws Exception {
         UserEntity user=userRepository.findByUserId(userId);
-        OperationStatusModel operationStatusModel;
         if(user==null)
-        {
-
-            operationStatusModel= OperationStatusModel.builder()
-                    .operationResult(RequestOperationStatus.ERROR.toString())
-                    .operationName(RequestOperationName.DELETE.toString())
-                    .build();
-        }
-        else{
+            throw new Exception ("order not found!....");
             long id=user.getId();
             userRepository.deleteById(id);
-            operationStatusModel= OperationStatusModel.builder()
-                    .operationResult(RequestOperationStatus.SUCCESS.toString())
-                    .operationName(RequestOperationName.DELETE.toString())
-                    .build();
-        }
-        return  operationStatusModel;
-
 
     }
 

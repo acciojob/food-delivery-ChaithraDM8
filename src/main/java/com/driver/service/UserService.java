@@ -12,10 +12,10 @@ import com.driver.shared.dto.UserDto;
  */
 public interface UserService{
 
-	UserDto createUser(UserDetailsRequestModel user) throws Exception, AlreadyExistsException;
+	UserDto createUser(UserDto user) throws Exception, AlreadyExistsException;
 	UserDto getUser(String email) throws Exception;
 	UserDto getUserByUserId(String userId) throws Exception;
-	UserDto updateUser(String userId, UserDetailsRequestModel user) throws Exception;
-	OperationStatusModel deleteUser(String userId) throws Exception;
+	UserDto updateUser(String userId, UserDto user) throws Exception;
+	void deleteUser(String userId) throws Exception;
 	List<UserDto> getUsers();
 }

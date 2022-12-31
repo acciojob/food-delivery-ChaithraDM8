@@ -21,7 +21,7 @@ public class UserEntity{
 	@GeneratedValue
 	private long id;
 
-	@Column(unique = true,nullable = false)
+	@Column(nullable = false)
 	private String userId;
 
 	@Column(nullable = false, length = 20)

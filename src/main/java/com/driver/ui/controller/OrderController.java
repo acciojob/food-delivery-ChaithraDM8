@@ -7,6 +7,8 @@ import com.driver.io.Converter.OrderConverter;
 import com.driver.model.request.OrderDetailsRequestModel;
 import com.driver.model.response.OperationStatusModel;
 import com.driver.model.response.OrderDetailsResponse;
+import com.driver.model.response.RequestOperationName;
+import com.driver.model.response.RequestOperationStatus;
 import com.driver.service.OrderService;
 import com.driver.service.impl.AlreadyExistsException;
 import com.driver.shared.dto.OrderDto;
@@ -33,21 +35,28 @@ public class OrderController {
 	}
 	
 	@PostMapping()
-	public OrderDetailsResponse createOrder(@RequestBody OrderDetailsRequestModel order) throws AlreadyExistsException {
-		OrderDto orderDto = orderService.createOrder(order);
+	public OrderDetailsResponse createOrder(@RequestBody OrderDetailsRequestModel order) throws Exception {
+		OrderDto orderDto = OrderConverter.convertRequestToDto(order);
+				orderDto=orderService.createOrder(orderDto);
 		return OrderConverter.convertDtoToResponse(orderDto);
 
 	}
 		
 	@PutMapping(path="/{id}")
 	public OrderDetailsResponse updateOrder(@PathVariable String id, @RequestBody OrderDetailsRequestModel order) throws Exception{
-		OrderDto orderDto=orderService.updateOrderDetails(id,order);
+		OrderDto orderDto = OrderConverter.convertRequestToDto(order);
+		orderDto=orderService.updateOrderDetails(id,orderDto);
 		return OrderConverter.convertDtoToResponse(orderDto);
 	}
 	
 	@DeleteMapping(path = "/{id}")
 	public OperationStatusModel deleteOrder(@PathVariable String id) throws Exception {
-		return orderService.deleteOrder(id);
+		OperationStatusModel op=OperationStatusModel.builder()
+				.operationName(RequestOperationName.DELETE.name())
+				.operationResult(RequestOperationStatus.SUCCESS.name())
+				.build();
+		orderService.deleteOrder(id);
+		return op;
 	}
 	
 	@GetMapping()

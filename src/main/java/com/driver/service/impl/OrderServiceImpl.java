@@ -1,6 +1,7 @@
 package com.driver.service.impl;
 
 import com.driver.io.Converter.OrderConverter;
+import com.driver.io.Converter.RandomStringGenerator;
 import com.driver.io.entity.OrderEntity;
 import com.driver.io.repository.OrderRepository;
 import com.driver.model.request.OrderDetailsRequestModel;
@@ -17,16 +18,20 @@ import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+
     @Autowired
     OrderRepository orderRepository;
+    @Autowired
+    RandomStringGenerator stringGenerator;
 
     @Override
-    public OrderDto createOrder(OrderDetailsRequestModel order) throws AlreadyExistsException {
+    public OrderDto createOrder(OrderDto order) throws Exception {
        OrderEntity orderPresent = orderRepository.findByOrderId(order.getOrderId());
         if (orderPresent != null) {
-            throw new AlreadyExistsException("Order already exists...!!");
+            throw new Exception("Order already exists...!!");
         }
-        OrderEntity orderEntity = OrderConverter.ConvertRequestToEntity(order);
+        OrderEntity orderEntity = OrderConverter.convertDtoToEntity(order);
+        orderEntity.setOrderId(stringGenerator.generateOrderId(30));
         orderEntity=orderRepository.save(orderEntity);
 
         return OrderConverter.convertEntityToDto(orderEntity);
@@ -39,7 +44,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto updateOrderDetails(String orderId, OrderDetailsRequestModel order) throws Exception {
+    public OrderDto updateOrderDetails(String orderId, OrderDto order) throws Exception {
         long id= orderRepository.findByOrderId(orderId).getId();
         OrderEntity orderEntity= OrderEntity.builder()
                 .id(id)
@@ -54,26 +59,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OperationStatusModel deleteOrder(String orderId) throws Exception {
+    public void deleteOrder(String orderId) throws Exception {
         OrderEntity order=orderRepository.findByOrderId(orderId);
-        OperationStatusModel operationStatusModel;
-        if(order==null)
-        {
-
-            operationStatusModel= OperationStatusModel.builder()
-                    .operationResult(RequestOperationStatus.ERROR.toString())
-                    .operationName(RequestOperationName.DELETE.toString())
-                    .build();
-        }
-        else{
+       if(order==null)
+           throw new Exception ("order not found!....");
             long id=order.getId();
             orderRepository.deleteById(id);
-            operationStatusModel= OperationStatusModel.builder()
-                    .operationResult(RequestOperationStatus.SUCCESS.toString())
-                    .operationName(RequestOperationName.DELETE.toString())
-                    .build();
-        }
-        return  operationStatusModel;
+
     }
 
     @Override

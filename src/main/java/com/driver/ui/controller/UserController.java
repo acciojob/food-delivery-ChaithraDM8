@@ -6,10 +6,13 @@ import java.util.List;
 import com.driver.io.Converter.UserConverter;
 import com.driver.model.request.UserDetailsRequestModel;
 import com.driver.model.response.OperationStatusModel;
+import com.driver.model.response.RequestOperationName;
+import com.driver.model.response.RequestOperationStatus;
 import com.driver.model.response.UserResponse;
 import com.driver.service.impl.AlreadyExistsException;
 import com.driver.service.impl.UserServiceImpl;
 import com.driver.shared.dto.UserDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/users")
+@Slf4j
 public class UserController {
 
 	@Autowired
@@ -33,20 +37,29 @@ public class UserController {
 	}
 
 	@PostMapping()
-	public UserResponse createUser(@RequestBody UserDetailsRequestModel userDetails) throws AlreadyExistsException {
-		UserDto userDto= userService.createUser(userDetails);
+	public UserResponse createUser(@RequestBody UserDetailsRequestModel userDetails) throws Exception {
+
+		UserDto userDto= UserConverter.convertRequestToDto(userDetails);
+
+				userDto=userService.createUser(userDto);
 	return UserConverter.convertDtoToResponse(userDto);
 	}
 
 	@PutMapping(path = "/{id}")
 	public UserResponse updateUser(@PathVariable String id, @RequestBody UserDetailsRequestModel userDetails) throws Exception{
-		UserDto userDto=userService.updateUser(id,userDetails);
+		UserDto userDto= UserConverter.convertRequestToDto(userDetails);
+		 userDto=userService.updateUser(id,userDto);
 		return UserConverter.convertDtoToResponse(userDto);
 	}
 
 	@DeleteMapping(path = "/{id}")
 	public OperationStatusModel deleteUser(@PathVariable String id) throws Exception{
-		return userService.deleteUser(id);
+		OperationStatusModel op=OperationStatusModel.builder()
+				.operationName(RequestOperationName.DELETE.name())
+				.operationResult(RequestOperationStatus.SUCCESS.name())
+				.build();
+		 userService.deleteUser(id);;
+		return op;
 	}
 	
 	@GetMapping()

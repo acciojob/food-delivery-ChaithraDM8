@@ -1,13 +1,11 @@
 package com.driver.model.request;
 
-import javax.persistence.Column;
-
 public class UserDetailsRequestModel {
-	@Column(unique = true,nullable = false)
-	private String userId;
+
 	private String firstName;
 	private String lastName;
 	private String email;
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -32,12 +30,6 @@ public class UserDetailsRequestModel {
 		this.email = email;
 	}
 
-	public String getUserId() {
-		return userId;
-	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
 
 }
