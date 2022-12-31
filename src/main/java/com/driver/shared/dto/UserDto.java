@@ -1,10 +1,14 @@
 package com.driver.shared.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.GeneratedValue;
 
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
 
 	@GeneratedValue
