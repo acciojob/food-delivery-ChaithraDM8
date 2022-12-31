@@ -4,10 +4,7 @@ import com.driver.io.Converter.OrderConverter;
 import com.driver.io.Converter.RandomStringGenerator;
 import com.driver.io.entity.OrderEntity;
 import com.driver.io.repository.OrderRepository;
-import com.driver.model.request.OrderDetailsRequestModel;
-import com.driver.model.response.OperationStatusModel;
-import com.driver.model.response.RequestOperationName;
-import com.driver.model.response.RequestOperationStatus;
+
 import com.driver.service.OrderService;
 import com.driver.shared.dto.OrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +36,20 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto getOrderById(String orderId) throws Exception {
+
        OrderEntity orderEntity=orderRepository.findByOrderId(orderId);
+        if (orderEntity == null) {
+            throw new Exception("Order Not Found...!!");
+        }
         return OrderConverter.convertEntityToDto(orderEntity);
     }
 
     @Override
     public OrderDto updateOrderDetails(String orderId, OrderDto order) throws Exception {
         long id= orderRepository.findByOrderId(orderId).getId();
+        if (id<=0 ) {
+            throw new Exception("Order Not Found...!!");
+        }
         OrderEntity orderEntity= OrderEntity.builder()
                 .id(id)
                 .userId(order.getUserId())

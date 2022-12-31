@@ -46,6 +46,9 @@ public class FoodServiceImpl implements FoodService {
     @Override
     public FoodDto getFoodById(String foodId) throws Exception {
         FoodEntity food = foodRepository.findByFoodId(foodId);
+        if (food == null) {
+            throw new Exception("Food not found...!!");
+        }
         return FoodConverter.convertEntityToDto(food);
 
     }
@@ -53,6 +56,9 @@ public class FoodServiceImpl implements FoodService {
     @Override
     public FoodDto updateFoodDetails(String foodId, FoodDto foodDetails) throws Exception {
         long id = foodRepository.findByFoodId(foodId).getId();
+        if (id<=0 ) {
+            throw new Exception("food Not Found...!!");
+        }
         FoodEntity food = FoodEntity.builder()
                 .id(id)
                 .foodName(foodDetails.getFoodName())

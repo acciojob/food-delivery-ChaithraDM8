@@ -10,7 +10,6 @@ import com.driver.model.response.OrderDetailsResponse;
 import com.driver.model.response.RequestOperationName;
 import com.driver.model.response.RequestOperationStatus;
 import com.driver.service.OrderService;
-import com.driver.service.impl.AlreadyExistsException;
 import com.driver.shared.dto.OrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;

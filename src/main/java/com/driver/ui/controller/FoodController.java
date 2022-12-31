@@ -4,13 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.driver.io.Converter.FoodConverter;
-import com.driver.io.Converter.OrderConverter;
 import com.driver.model.request.FoodDetailsRequestModel;
 import com.driver.model.response.*;
-import com.driver.service.impl.AlreadyExistsException;
 import com.driver.service.impl.FoodServiceImpl;
 import com.driver.shared.dto.FoodDto;
-import com.driver.shared.dto.OrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

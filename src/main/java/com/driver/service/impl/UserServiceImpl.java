@@ -40,6 +40,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUser(String email) throws Exception {
         UserEntity userEntity=userRepository.findByEmail(email);
+        if(userEntity==null)
+            throw new Exception("user not found...!!");
         return UserConverter.convertEntityToDto(userEntity);
     }
 
@@ -56,6 +58,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateUser(String userId, UserDto userDetails) throws Exception {
         long id= userRepository.findByUserId(userId).getId();
+        if (id<=0 ) {
+            throw new Exception("user Not Found...!!");
+        }
        UserEntity user= UserEntity.builder()
                 .id(id)
                .userId(userDetails.getUserId())
@@ -71,7 +76,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(String userId) throws Exception {
         UserEntity user=userRepository.findByUserId(userId);
         if(user==null)
-            throw new Exception ("order not found!....");
+            throw new Exception ("user not found!....");
             long id=user.getId();
             userRepository.deleteById(id);
 

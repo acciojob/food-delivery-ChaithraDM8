@@ -9,7 +9,6 @@ import com.driver.model.response.OperationStatusModel;
 import com.driver.model.response.RequestOperationName;
 import com.driver.model.response.RequestOperationStatus;
 import com.driver.model.response.UserResponse;
-import com.driver.service.impl.AlreadyExistsException;
 import com.driver.service.impl.UserServiceImpl;
 import com.driver.shared.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;

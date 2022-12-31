@@ -2,9 +2,6 @@ package com.driver.service;
 
 import java.util.List;
 
-import com.driver.model.request.OrderDetailsRequestModel;
-import com.driver.model.response.OperationStatusModel;
-import com.driver.service.impl.AlreadyExistsException;
 import com.driver.shared.dto.OrderDto;
 
 /**
