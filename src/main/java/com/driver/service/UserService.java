@@ -9,7 +9,7 @@ import com.driver.shared.dto.UserDto;
  */
 public interface UserService{
 
-	UserDto createUser(UserDto user) throws Exception, AlreadyExistsException;
+	UserDto createUser(UserDto user) throws Exception;
 	UserDto getUser(String email) throws Exception;
 	UserDto getUserByUserId(String userId) throws Exception;
 	UserDto updateUser(String userId, UserDto user) throws Exception;

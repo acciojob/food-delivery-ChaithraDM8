@@ -4,8 +4,7 @@ import com.driver.io.Converter.RandomStringGenerator;
 import com.driver.io.Converter.UserConverter;
 import com.driver.io.entity.UserEntity;
 import com.driver.io.repository.UserRepository;
-import com.driver.model.request.UserDetailsRequestModel;
-import com.driver.model.response.*;
+
 import com.driver.service.UserService;
 import com.driver.shared.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;
